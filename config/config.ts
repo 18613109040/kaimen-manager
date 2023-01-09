@@ -129,7 +129,7 @@ export default defineConfig({
   ],
   //================ pro 插件配置 =================
   presets: ['umi-presets-pro'],
-  
+
   mfsu: {
     strategy: 'normal',
   },

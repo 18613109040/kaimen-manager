@@ -2,7 +2,7 @@ import { request } from '@umijs/max';
 
 type LoginData = {
   token: string;
-}
+};
 export type LoginParams = {
   username?: string;
   password?: string;
@@ -13,8 +13,5 @@ export async function login(body: LoginParams) {
   return request<API.BaseResponse<string> & LoginData>('/sfw-managerApi/login', {
     method: 'POST',
     data: body,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8' 
-    }
   });
 }

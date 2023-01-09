@@ -2,7 +2,8 @@ declare namespace API {
   export type BaseResponse<T = any> = {
     code: string;
     message: string;
-    data: T;
+    data?: T;
+    result?: T;
   };
 
   export type BaseListResponse<T = any> = {

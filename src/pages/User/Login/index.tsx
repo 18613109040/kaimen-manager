@@ -7,8 +7,8 @@ import { history, Helmet } from '@umijs/max';
 import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
+import store from 'store';
 import styles from './index.less';
-import axios from 'axios';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -36,30 +36,19 @@ const Login: React.FC = () => {
         mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7,
       });
-      console.log('encrypted=====', encrypted.toString());
-      // 登录
-      // axios.post("http://183.2.157.223:9999/sfw-managerApi/login", {
-      //   ...values, password: encrypted.toString()
-      // }, {
-      //   withCredentials: false,
-      //   // headers: {
-      //   //   'Content-Type': 'application/json;charset=UTF-8' 
-      //   // }
-      // })
-
-      // const res = await login({ ...values, password: encrypted.toString() });
-      // console.log(res)
-      // if (res.code === RESPONSE_SUCCESS_CODE) {
-      //   message.success('登录成功！');
-      //   // await fetchUserInfo();
-      //   store.set(AUTHORIZATION_TOKEN, res.data);
-      //   const urlParams = new URL(window.location.href).searchParams;
-      //   history.push(urlParams.get('redirect') || '/');
-      //   return;
-      // }
+      const res = await login({ ...values, password: encrypted.toString() });
+      console.log(res);
+      if (res.code === RESPONSE_SUCCESS_CODE) {
+        message.success('登录成功！');
+        store.set(AUTHORIZATION_TOKEN, res.token);
+        const urlParams = new URL(window.location.href).searchParams;
+        history.replace(urlParams.get('redirect') || '/');
+        return;
+      }
       // 如果失败去设置用户错误信息
       setUseLoginError(true);
     } catch (error) {
+      console.log(error);
       message.error('登录失败，请重试！');
     }
   };

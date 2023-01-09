@@ -1,6 +1,7 @@
 ﻿import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import store from 'store';
 import { AUTHORIZATION_TOKEN } from '@/constant';
 
 // 错误处理方案： 错误类型
@@ -41,7 +42,7 @@ export const requestConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
-      if (opts?.skipErrorHandler) throw error;
+      if (!opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
@@ -90,10 +91,10 @@ export const requestConfig: RequestConfig = {
   requestInterceptors: [
     (config: RequestOptions) => {
       // 拦截请求配置，进行个性化处理。
-      console.log("===requestInterceptors=========")
-      const token  = store.get(AUTHORIZATION_TOKEN);
-      if(token) {
-        config.headers!["Authorization"] = token;
+      console.log('===requestInterceptors=========', store.get(AUTHORIZATION_TOKEN));
+      const token = store.get(AUTHORIZATION_TOKEN);
+      if (token) {
+        config.headers!['Authorization'] = token;
       }
       return { ...config };
     },

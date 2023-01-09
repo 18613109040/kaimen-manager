@@ -1,15 +1,17 @@
 import Footer from '@/components/Footer';
 import RightContent from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { requestConfig } from './requestConfig';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import React from 'react';
-const isDev = process.env.NODE_ENV === 'development';
+// import { queryMenuListService } from '@/services/common';
+// import { RESPONSE_SUCCESS_CODE } from '@/constant';
+// import { transformMenu } from './utils/menu';
+
 const loginPath = '/user/login';
 
 /**
@@ -28,7 +30,7 @@ export async function getInitialState(): Promise<{
       });
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      // history.push(loginPath);
     }
     return undefined;
   };
@@ -55,13 +57,23 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    menu: {
+      locale: false,
+      // request: async (params: Record<string, any>, defaultMenuData: MenuDataItem[]) => {
+      //   const res = await queryMenuListService({account: "admin"});
+      //   console.log(res)
+      //   if(res?.code === RESPONSE_SUCCESS_CODE) {
+      //   //  console.log(transformMenu(res?.result!))
+      //   }
+      // }
+    },
     footerRender: () => <Footer />,
     onPageChange: () => {
-      const { location } = history;
+      // const { location } = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      }
+      // if (!initialState?.currentUser && location.pathname !== loginPath) {
+      //   history.push(loginPath);
+      // }
     },
     layoutBgImgList: [
       {
@@ -83,14 +95,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-        ]
-      : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
@@ -123,9 +127,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
  * 它基于 axios 和 ahooks 的 useRequest 提供了一套统一的网络请求和错误处理方案。
  * @doc https://umijs.org/docs/max/request#配置
  */
-// export const request = {
-//   // withCredentials: false,
-//   // headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-//   ...requestConfig,
-//   // requestInterceptors: requestConfig.requestInterceptors,
-// };
+export const request = {
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+  ...requestConfig,
+};
