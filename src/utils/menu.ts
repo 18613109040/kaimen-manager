@@ -7,7 +7,7 @@ function recursionMenu(subMenus: MenuType[]): MenuDataItem {
     let menu: MenuDataItem = {
       path: sub.index,
       name: sub.title,
-      icon: sub.icon,
+      // icon: sub.icon,
       children: [],
     };
     if ((sub.subs || [])?.length > 0) {
@@ -27,12 +27,11 @@ export function transformMenu(list?: MenuType[]): MenuDataItem[] {
     const item: MenuDataItem = {
       path: menu.index,
       name: menu.title,
-      icon: menu.icon,
+      // icon: menu.icon,
     };
     if ((menu?.subs || [])?.length > 0) {
       // @ts-ignore
       item.children = recursionMenu(menu.subs!);
-      console.log(item.children);
     }
     menus.push(item);
 

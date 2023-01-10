@@ -8,6 +8,7 @@ import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import store from 'store';
+import queryString from 'query-string';
 import styles from './index.less';
 
 const LoginMessage: React.FC<{

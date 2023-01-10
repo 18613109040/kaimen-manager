@@ -61,15 +61,38 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.name,
     },
+    defaultCollapsed: true,
+    token: {
+      colorBgAppListIconHover: 'rgba(0,0,0,0.06)',
+      colorTextAppListIconHover: 'rgba(255,255,255,0.95)',
+      colorTextAppListIcon: 'rgba(255,255,255,0.85)',
+      sider: {
+        colorBgCollapsedButton: '#fff',
+        colorTextCollapsedButtonHover: 'rgba(0,0,0,0.65)',
+        colorTextCollapsedButton: 'rgba(0,0,0,0.45)',
+        colorMenuBackground: '#004FD9',
+        colorBgMenuItemCollapsedHover: 'rgba(0,0,0,0.06)',
+        colorBgMenuItemCollapsedSelected: 'rgba(0,0,0,0.15)',
+        colorMenuItemDivider: 'rgba(255,255,255,0.15)',
+        colorBgMenuItemHover: 'rgba(0,0,0,0.06)',
+        colorBgMenuItemSelected: 'rgba(0,0,0,0.15)',
+        colorTextMenuSelected: '#fff',
+        colorTextMenu: 'rgba(255,255,255,0.75)',
+        colorTextMenuSecondary: 'rgba(255,255,255,0.65)',
+        colorTextMenuTitle: 'rgba(255,255,255,0.95)',
+        colorTextMenuActive: 'rgba(255,255,255,0.95)',
+        colorTextSubMenuSelected: '#fff',
+      },
+    },
     menu: {
       locale: false,
-      // request: async (params: Record<string, any>, defaultMenuData: MenuDataItem[]) => {
-      //   const res = await queryMenuListService({account: "admin"});
-      //   console.log(res)
-      //   if(res?.code === RESPONSE_SUCCESS_CODE) {
-      //   //  console.log(transformMenu(res?.result!))
-      //   }
-      // }
+      request: async () => {
+        const res = await queryMenuListService({ account: 'admin' });
+        console.log(res);
+        if (res?.code === RESPONSE_SUCCESS_CODE) {
+          return transformMenu(res.result!) || [];
+        }
+      },
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -99,7 +122,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    menuHeaderRender: undefined,
+    // menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
