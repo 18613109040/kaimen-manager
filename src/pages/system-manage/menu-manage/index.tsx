@@ -14,17 +14,20 @@ const MenuManage: React.FC = () => {
                 {
                     title: "直播工作台",
                     key: "0-1",
+                },{
+                    title: "直播工作台2",
+                    key: "0-2",
                 }
             ]
         }
     ];
     return (
         <Tree
-        showLine
-        switcherIcon={<DownOutlined />}
-        defaultExpandedKeys={['0-0-0']}
-        onSelect={onSelect}
-        treeData={treeData}
+            showLine
+            switcherIcon={<DownOutlined />}
+            defaultExpandedKeys={['0-0-0']}
+            onSelect={onSelect}
+            treeData={treeData}
         />
     )
 }

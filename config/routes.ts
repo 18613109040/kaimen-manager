@@ -81,6 +81,10 @@ export default [
         path: 'role-manage',
         name: '角色管理',
         component: './system-manage/role-manage',
+      },{
+        path: 'menu-manage',
+        name: '菜单管理',
+        component: './system-manage/menu-manage',
       }
     ]
   },
