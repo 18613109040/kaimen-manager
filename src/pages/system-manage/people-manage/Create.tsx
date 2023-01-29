@@ -1,12 +1,13 @@
 import { RESPONSE_SUCCESS_CODE } from '@/constant';
-import {  CreateUserData, createUserService,queryUserService, updateUserService } from '@/services/system-manage/people-manage';
 import {
-  ModalForm,
-  ProFormSelect,
-  ProFormText,
-} from '@ant-design/pro-components';
+  CreateUserData,
+  createUserService,
+  queryUserService,
+  updateUserService,
+} from '@/services/system-manage/people-manage';
+import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-components';
 import { Divider, Form, message } from 'antd';
-import CryptoJS from 'crypto-js';
+const CryptoJS = require('crypto-js');
 import React, { useEffect } from 'react';
 
 type CreateProps = {
@@ -18,14 +19,14 @@ type CreateProps = {
 const Create = (props: CreateProps) => {
   const [form] = Form.useForm<CreateUserData>();
   const getData = async (id: number) => {
-   const res = await queryUserService(id);
-   if(res.code === RESPONSE_SUCCESS_CODE) {
-    form?.setFieldsValue({...res?.data });
-   }
-  }
+    const res = await queryUserService(id);
+    if (res.code === RESPONSE_SUCCESS_CODE) {
+      form?.setFieldsValue({ ...res?.data });
+    }
+  };
   useEffect(() => {
     if (props?.id) {
-      getData(props?.id)
+      getData(props?.id);
     }
   }, [props?.id]);
   return (
@@ -34,11 +35,9 @@ const Create = (props: CreateProps) => {
       open={props?.open}
       form={form}
       width={500}
-      labelCol={
-        {
-          span: 6
-        }
-      }
+      labelCol={{
+        span: 6,
+      }}
       layout="horizontal"
       autoFocusFirstInput
       modalProps={{
@@ -46,21 +45,19 @@ const Create = (props: CreateProps) => {
         maskClosable: false,
         onCancel: () => props?.onCancel!(),
       }}
-  
       onFinish={async (values) => {
-        if(props.id) {
-          
+        if (props.id) {
           const res = await updateUserService({
             ...values,
-            id: props.id
+            id: props.id,
           });
           if (res?.code === RESPONSE_SUCCESS_CODE) {
             message.success('提交成功');
             props?.onFinish!();
-          }else {
+          } else {
             message.error(res?.msg);
           }
-        }else{
+        } else {
           const key = CryptoJS.enc.Utf8.parse('kjjmanager-qaz852');
           const srcs = CryptoJS.enc.Utf8.parse(values.pwd!);
           const encrypted = CryptoJS.AES.encrypt(srcs, key, {
@@ -69,21 +66,20 @@ const Create = (props: CreateProps) => {
           });
           const res = await createUserService({
             ...values,
-            pwd: encrypted.toString()
+            pwd: encrypted.toString(),
           });
           if (res?.code === RESPONSE_SUCCESS_CODE) {
             message.success('提交成功');
             props?.onFinish!();
-          }else{
+          } else {
             message.error(res?.msg);
           }
         }
-       
 
         return true;
       }}
     >
-      <Divider/>
+      <Divider />
       <ProFormText
         rules={[
           {
@@ -106,18 +102,19 @@ const Create = (props: CreateProps) => {
         label="账户"
         placeholder="请输入账户"
       />
-      { !props.id && <ProFormText
-
-        rules={[
-          {
-            required: true,
-            message: '请输入密码',
-          },
-        ]}
-        name="pwd"
-        label="密码"
-        placeholder="请输入密码"
-      />}
+      {!props.id && (
+        <ProFormText
+          rules={[
+            {
+              required: true,
+              message: '请输入密码',
+            },
+          ]}
+          name="pwd"
+          label="密码"
+          placeholder="请输入密码"
+        />
+      )}
       <ProFormText
         rules={[
           {
@@ -149,7 +146,7 @@ const Create = (props: CreateProps) => {
         // }}
         request={async () => [
           { label: '启用', value: 1 },
-          { label: '停用', value: 0 }
+          { label: '停用', value: 0 },
         ]}
         width={100}
         placeholder="是否启用"

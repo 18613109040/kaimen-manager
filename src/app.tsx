@@ -32,8 +32,8 @@ export async function getInitialState(): Promise<{
     } catch (error) {
       history.replace(
         `${routerPath.LOGIN_LOGIN_TEL}?redirect=${encodeURIComponent(
-          window.location.pathname + window.location.search
-        )}`
+          window.location.pathname + window.location.search,
+        )}`,
       );
     }
     return undefined;
@@ -86,13 +86,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     menu: {
       locale: false,
-      request: async () => {
-        const res = await queryMenuListService({ account: 'admin' });
-        console.log(res);
-        if (res?.code === RESPONSE_SUCCESS_CODE) {
-          return transformMenu(res.result!) || [];
-        }
-      },
+      // request: async () => {
+      //   const res = await queryMenuListService({ account: 'admin' });
+      //   console.log(res);
+      //   if (res?.code === RESPONSE_SUCCESS_CODE) {
+      //     return transformMenu(res.result!) || [];
+      //   }
+      // },
     },
     footerRender: () => <Footer />,
     onPageChange: () => {

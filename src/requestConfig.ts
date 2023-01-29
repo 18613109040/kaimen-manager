@@ -3,7 +3,6 @@ import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import { history } from '@umijs/max';
 import store from 'store';
-import { history } from '@umijs/max';
 import { AUTHORIZATION_TOKEN, routerPath } from '@/constant';
 
 // 错误处理方案： 错误类型
@@ -45,7 +44,7 @@ export const requestConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
-      console.log("xxxxxxx", error, opts)
+      console.log('xxxxxxx', error, opts);
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
@@ -78,19 +77,14 @@ export const requestConfig: RequestConfig = {
       } else if (error.response) {
         const { status } = error.response!;
         // 未登录
-        if (status === 401) {
-          // const path =
-          history.replace(routePath.login);
-          return false;
-        }
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
         console.log(`Response status:${error.response.status}`);
-        if(error.response.status === 401) {
+        if (status === 401) {
           history.replace(
             `${routerPath.LOGIN_LOGIN_TEL}?redirect=${encodeURIComponent(
-              window.location.pathname + window.location.search
-            )}`
+              window.location.pathname + window.location.search,
+            )}`,
           );
         }
       } else if (error.request) {

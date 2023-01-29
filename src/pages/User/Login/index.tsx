@@ -6,9 +6,8 @@ import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { history, Helmet, useModel } from '@umijs/max';
 import { Alert, message } from 'antd';
 import React, { useState } from 'react';
-import CryptoJS from 'crypto-js';
+const CryptoJS = require('crypto-js');
 import store from 'store';
-import queryString from 'query-string';
 import styles from './index.less';
 
 const LoginMessage: React.FC<{
@@ -42,11 +41,11 @@ const Login: React.FC = () => {
       if (res.code === RESPONSE_SUCCESS_CODE) {
         message.success('登录成功！');
         store.set(AUTHORIZATION_TOKEN, res.token);
-        const userInfo = await initialState?.fetchUserInfo!()
+        const userInfo = await initialState?.fetchUserInfo!();
         setInitialState({
           ...initialState,
-          currentUser: userInfo
-        })
+          currentUser: userInfo,
+        });
         const urlParams = new URL(window.location.href).searchParams;
         history.replace(urlParams.get('redirect') || '/');
         return;

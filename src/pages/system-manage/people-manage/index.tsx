@@ -1,20 +1,19 @@
 import { RESPONSE_SUCCESS_CODE } from '@/constant';
 import {
-  deleteGoodsService,
-  PageGoodsData,
-  queryPageGoodsService,
-} from '@/services/machine-tool-manage/inventory';
-import { deleteUserService, PeopleData, queryAdminUserListService } from '@/services/system-manage/people-manage';
+  deleteUserService,
+  PeopleData,
+  queryAdminUserListService,
+} from '@/services/system-manage/people-manage';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, message, Popconfirm, Space } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 import { useRef, useState } from 'react';
 import Create from './Create';
 const PeopleManage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [open, setOpen] = useState(false);
-  const [editId,setEditId] = useState<number | string>();
+  const [editId, setEditId] = useState<number | string>();
   const handleDeleteConfirm = async (ids: number) => {
     const res = await deleteUserService(ids);
     message.success(res?.message);
@@ -25,7 +24,7 @@ const PeopleManage: React.FC = () => {
   const handleEdit = (id: number) => {
     setEditId(id);
     setOpen(true);
-  }
+  };
   const columns: ProColumns<PeopleData>[] = [
     {
       title: '用户名',
@@ -43,25 +42,25 @@ const PeopleManage: React.FC = () => {
       title: '账户',
       dataIndex: 'account',
       key: 'account',
-      search: false
+      search: false,
     },
     {
       title: '电话',
       dataIndex: 'phone',
       key: 'phone',
-      search: false
+      search: false,
     },
     {
       title: '邮箱',
       dataIndex: 'email',
       key: 'email',
-      search: false
+      search: false,
     },
     {
       title: '角色',
       dataIndex: 'price',
       key: 'price',
-      search: false
+      search: false,
     },
     {
       title: '状态',
@@ -71,13 +70,12 @@ const PeopleManage: React.FC = () => {
         1: { text: '启动', status: 'Success' },
         0: { text: '停用', status: 'Error' },
       },
-
     },
     {
       title: '创建时间',
       dataIndex: 'createDt',
       key: 'createDt',
-      search: false
+      search: false,
     },
     {
       title: '操作',
@@ -89,12 +87,14 @@ const PeopleManage: React.FC = () => {
         <Popconfirm
           key=""
           title="确认删除"
-          onConfirm={() => handleDeleteConfirm( record.id!)}
+          onConfirm={() => handleDeleteConfirm(record.id!)}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
         >
           <Button type="link">删除</Button>
         </Popconfirm>,
-        <a key="link" onClick={() => handleEdit(record.id!)}>编辑</a>,
+        <a key="link" onClick={() => handleEdit(record.id!)}>
+          编辑
+        </a>,
       ],
     },
   ];
@@ -102,8 +102,8 @@ const PeopleManage: React.FC = () => {
   const handleCreateFinish = () => {
     setOpen(false);
     actionRef?.current?.reload();
-    setEditId("")
-  }
+    setEditId('');
+  };
   return (
     <>
       <ProTable<PeopleData>
@@ -111,7 +111,7 @@ const PeopleManage: React.FC = () => {
         actionRef={actionRef}
         cardBordered
         pagination={{
-            defaultPageSize: 10
+          defaultPageSize: 10,
         }}
         options={false}
         request={async (params = {}) => {
@@ -136,12 +136,20 @@ const PeopleManage: React.FC = () => {
         }}
         rowKey="id"
         toolBarRender={() => [
-          <Button key="button" onClick={()=> setOpen(true)} icon={<PlusOutlined />} type="primary">
+          <Button key="button" onClick={() => setOpen(true)} icon={<PlusOutlined />} type="primary">
             新建
           </Button>,
         ]}
       />
-      <Create id={editId} open={open} onFinish={handleCreateFinish} onCancel={()=> { setOpen(false); setEditId("")}}/>
+      <Create
+        id={editId as number}
+        open={open}
+        onFinish={handleCreateFinish}
+        onCancel={() => {
+          setOpen(false);
+          setEditId('');
+        }}
+      />
     </>
   );
 };
