@@ -44,7 +44,7 @@ const GlobalHeaderRight: React.FC = () => {
       <span
         className={actionClassName}
         onClick={() => {
-          window.open('https://pro.ant.design/docs/getting-started');
+         
         }}
       >
         <QuestionCircleOutlined />

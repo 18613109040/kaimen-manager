@@ -3,7 +3,7 @@ import { AUTHORIZATION_TOKEN, RESPONSE_SUCCESS_CODE } from '@/constant';
 import { login, LoginParams } from '@/services/user/login';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
-import { history, Helmet } from '@umijs/max';
+import { history, Helmet, useModel } from '@umijs/max';
 import { Alert, message } from 'antd';
 import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
@@ -27,7 +27,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [useLoginError, setUseLoginError] = useState(false);
-
+  const { initialState, setInitialState } = useModel('@@initialState');
   const handleSubmit = async (values: LoginParams) => {
     try {
       const key = CryptoJS.enc.Utf8.parse('kjjmanager-qaz852');
@@ -41,6 +41,11 @@ const Login: React.FC = () => {
       if (res.code === RESPONSE_SUCCESS_CODE) {
         message.success('登录成功！');
         store.set(AUTHORIZATION_TOKEN, res.token);
+        const userInfo = await initialState?.fetchUserInfo!()
+        setInitialState({
+          ...initialState,
+          currentUser: userInfo
+        })
         const urlParams = new URL(window.location.href).searchParams;
         history.replace(urlParams.get('redirect') || '/');
         return;
@@ -66,12 +71,12 @@ const Login: React.FC = () => {
             marginTop: '40px',
           }}
           // logo={<img alt="logo" src="/logo.png" />}
-          title="凯蒙后台管理系统"
+          title="后台管理系统"
           initialValues={{
             autoLogin: true,
           }}
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values);
           }}
         >
           {useLoginError && <LoginMessage content="账户或密码错误" />}

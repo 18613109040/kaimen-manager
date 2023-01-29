@@ -6,8 +6,10 @@ import type { RunTimeLayoutConfig } from '@umijs/max';
 import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import { requestConfig } from './requestConfig';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+
 import React from 'react';
+import { queryCurrentUserService } from '@/services/common';
+import { routerPath } from './constant';
 // import { queryMenuListService } from '@/services/common';
 // import { RESPONSE_SUCCESS_CODE } from '@/constant';
 // import { transformMenu } from './utils/menu';
@@ -25,12 +27,14 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
+      const msg = await queryCurrentUserService();
       return msg.data;
     } catch (error) {
-      // history.push(loginPath);
+      history.replace(
+        `${routerPath.LOGIN_LOGIN_TEL}?redirect=${encodeURIComponent(
+          window.location.pathname + window.location.search
+        )}`
+      );
     }
     return undefined;
   };

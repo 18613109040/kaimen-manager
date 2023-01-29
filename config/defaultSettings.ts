@@ -18,7 +18,7 @@ const Settings: LayoutSettings & {
   title: '凯蒙后台管理系统',
   pwa: false,
   logo: '/logo.png',
-  iconfontUrl: '',
+  iconfontUrl: '//at.alicdn.com/t/c/font_3862327_lzeo6devam9.js',
 };
 
 export default Settings;

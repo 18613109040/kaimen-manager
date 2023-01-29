@@ -18,7 +18,7 @@ export default [
       {
         name: 'login',
         path: '/user/login',
-        component: './User/Login',
+        component: './user/login',
       },
     ],
   },
@@ -26,7 +26,63 @@ export default [
     path: '/dashboard',
     name: '首页',
     icon: 'smile',
-    component: './Dashboard',
+    component: './dashboard',
+  },{
+    path: '/machine-tool-manage',
+    name: '机具管理',
+    icon: 'icon-golden-fill',
+    routes: [
+      {
+        path: 'inventory',
+        name: '设备管理',
+        component: './machine-tool-manage/inventory',
+      }
+    ]
+  },
+  {
+    path: '/salesman-manage',
+    name: '业务员管理',
+    icon: 'icon-golden-fill',
+    routes: [
+      {
+        path: 'salesman',
+        name: '业务员列表',
+        component: './salesman-manage/salesman',
+      }
+    ]
+  },
+  {
+    path: '/platform-setting',
+    name: '平台配置',
+    icon: 'icon-ungroup',
+    routes: [
+      {
+        path: 'partner-level',
+        name: '等级配置',
+        component: './platform-setting/partner-level',
+      },
+      {
+        path: 'vip-level',
+        name: 'VIP等级配置',
+        component: './platform-setting/vip-level',
+      }
+    ]
+  },
+  {
+    path: '/system-manage',
+    name: '系统管理',
+    icon: 'icon-setting',
+    routes: [
+      {
+        path: 'people-manage',
+        name: '人员管理',
+        component: './system-manage/people-manage',
+      },{
+        path: 'role-manage',
+        name: '角色管理',
+        component: './system-manage/role-manage',
+      }
+    ]
   },
   {
     path: '/',

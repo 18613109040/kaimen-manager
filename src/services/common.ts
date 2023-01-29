@@ -1,12 +1,16 @@
 import { request } from '@umijs/max';
-
+export type UserData = {
+  account: string;
+  createDt: string;
+  id: string;
+  name: string;
+  pwd: string;
+  token: string;
+}
 /** 获取当前的用户 GET /api/currentUser */
-export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.BaseResponse;
-  }>('/api/currentUser', {
+export async function queryCurrentUserService() {
+  return request<API.BaseResponse<UserData>>(`/sfw-managerApi/admin/getUserInfoByToken`, {
     method: 'GET',
-    ...(options || {}),
   });
 }
 type QueryMenuListParmas = {

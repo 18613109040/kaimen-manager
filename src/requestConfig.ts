@@ -2,7 +2,8 @@
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
 import store from 'store';
-import { AUTHORIZATION_TOKEN } from '@/constant';
+import { history } from '@umijs/max';
+import { AUTHORIZATION_TOKEN, routerPath } from '@/constant';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -42,7 +43,8 @@ export const requestConfig: RequestConfig = {
     },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
-      if (!opts?.skipErrorHandler) throw error;
+      console.log("xxxxxxx", error, opts)
+      if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
@@ -74,7 +76,14 @@ export const requestConfig: RequestConfig = {
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
-        message.error(`Response status:${error.response.status}`);
+        console.log(`Response status:${error.response.status}`);
+        if(error.response.status === 401) {
+          history.replace(
+            `${routerPath.LOGIN_LOGIN_TEL}?redirect=${encodeURIComponent(
+              window.location.pathname + window.location.search
+            )}`
+          );
+        }
       } else if (error.request) {
         // 请求已经成功发起，但没有收到响应
         // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，

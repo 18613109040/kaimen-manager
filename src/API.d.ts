@@ -4,28 +4,27 @@ declare namespace API {
     message: string;
     data?: T;
     result?: T;
+    msg?: string;
   };
 
   export type BaseListResponse<T = any> = {
     code: string;
-    msg: string;
-    data: {
+    message: string;
+    data?: {
       count?: number;
       from?: string;
       size?: string;
       records: T;
     };
+    rows?: T[]
+
   };
   export type BasePageResponse<T = any> = {
     code: string;
-    msg: string;
-    data: {
-      count?: number;
-      from?: string;
-      size?: string;
-      current?: number;
-      total?: number;
-      records: T;
+    message: string;
+    result: {
+      countNum: number;
+      list: T[];
     };
   };
   export type IBaseList<T = any> = {
@@ -40,9 +39,12 @@ declare namespace API {
   };
 
   export interface PageSortQueryParams {
-    pageNum: number;
+    currentPage: number;
     pageSize: number;
     order?: number[];
     sort?: string[];
+  }
+  export interface CurrentUser {
+    name: string
   }
 }
