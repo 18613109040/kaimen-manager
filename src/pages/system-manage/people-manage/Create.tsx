@@ -140,6 +140,7 @@ const Create = (props: CreateProps) => {
       <ProFormSelect
         name="use"
         label="状态"
+        initialValue={1}
         // valueEnum={{
         //   1: "启用",
         //   0: "停用"

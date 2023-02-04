@@ -1,13 +1,13 @@
 import { request } from '@umijs/max';
 export enum AuthStatus {
-    /** 未实名认证 */
-    CERTAIN = 0,
-    ALREADY = 2,
+  /** 未实名认证 */
+  CERTAIN = 0,
+  ALREADY = 2,
 }
 export const AuthStatusText = {
-    [AuthStatus.CERTAIN]: "未实名",
-    [AuthStatus.ALREADY]: "已实名",
-}
+  [AuthStatus.CERTAIN]: '未实名',
+  [AuthStatus.ALREADY]: '已实名',
+};
 export type SalesmanData = {
   address: string;
   authStatus: AuthStatus;
@@ -24,18 +24,33 @@ export type SalesmanData = {
   ii1?: string;
   ii2?: string;
   ii3?: string;
-
+  id?: string;
 };
-export async function querySalesmanListService(body: API.PageSortQueryParams & { authStaus: string; keyword: string}) {
+export async function querySalesmanListService(
+  body: API.PageSortQueryParams & { authStaus: string; keyword: string },
+) {
   return request<API.BasePageResponse<SalesmanData>>('/sfw-managerApi/merch/pageList', {
     method: 'POST',
     data: body,
   });
 }
 
-export async function querySalesmanDetailService(body:{ merchno: string }) {
-    return request<API.BaseResponse<SalesmanData>>('/sfw-managerApi/merch/detail', {
-      method: 'POST',
-      data: body,
-    });
-  }
+export async function querySalesmanDetailService(body: { merchno: string }) {
+  return request<API.BaseResponse<SalesmanData>>('/sfw-managerApi/merch/detail', {
+    method: 'POST',
+    data: body,
+  });
+}
+
+export async function queryKLevelService(id: string) {
+  return request<API.BaseResponse<string[]>>(`/sfw-managerApi/merch/getKLevelList/${id}`, {
+    method: 'GET',
+  });
+}
+
+export async function setKLevelService(body: { id: string; kLevel: string }) {
+  return request<API.BaseResponse<string[]>>('/sfw-managerApi//merch/setLevel', {
+    method: 'PUT',
+    data: body,
+  });
+}

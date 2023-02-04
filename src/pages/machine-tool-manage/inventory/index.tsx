@@ -2,7 +2,7 @@ import { RESPONSE_SUCCESS_CODE } from '@/constant';
 import {
   deleteGoodsService,
   PageGoodsData,
-  queryPageGoodsService,
+  queryMachinesListService,
 } from '@/services/machine-tool-manage/inventory';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
@@ -13,7 +13,7 @@ import Create from './Create';
 const Inventory: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [open, setOpen] = useState(false);
-  const [editData, setEditData] = useState<PageGoodsData | undefined>(undefined)
+  const [editData, setEditData] = useState<PageGoodsData | undefined>(undefined);
   const handleDeleteConfirm = async (ids: Record<string, string>) => {
     const res = await deleteGoodsService(ids);
     message.success(res?.message);
@@ -24,7 +24,7 @@ const Inventory: React.FC = () => {
   const handleEdit = (data: PageGoodsData) => {
     setEditData(data);
     setOpen(true);
-  }
+  };
   const columns: ProColumns<PageGoodsData>[] = [
     {
       title: '图片',
@@ -78,12 +78,14 @@ const Inventory: React.FC = () => {
         <Popconfirm
           key=""
           title="确认删除"
-          onConfirm={() => handleDeleteConfirm({id: record?.id })}
+          onConfirm={() => handleDeleteConfirm({ id: record?.id as any })}
           icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
         >
           <Button type="link">删除</Button>
         </Popconfirm>,
-        <a key="link" onClick={() => handleEdit(record)}>编辑</a>,
+        <a key="link" onClick={() => handleEdit(record)}>
+          编辑
+        </a>,
       ],
     },
   ];
@@ -92,7 +94,7 @@ const Inventory: React.FC = () => {
     setOpen(false);
     actionRef?.current?.reload();
     setEditData(undefined);
-  }
+  };
   return (
     <>
       <ProTable<PageGoodsData>
@@ -103,7 +105,7 @@ const Inventory: React.FC = () => {
           defaultSelectedRowKeys: [],
         }}
         pagination={{
-            defaultPageSize: 10
+          defaultPageSize: 10,
         }}
         options={false}
         tableAlertRender={({ selectedRowKeys, onCleanSelected }) => (
@@ -116,14 +118,12 @@ const Inventory: React.FC = () => {
             </span>
           </Space>
         )}
-        tableAlertOptionRender={({selectedRowKeys}) => {
-            console.log(selectedRowKeys)
-          return <Button type="link" 
-        //   onClick={() => handleDeleteConfirm((selectedRowKeys|| [])?.map((key: string)=> ({id: key})))}
-          >批量删除</Button>;
+        tableAlertOptionRender={({ selectedRowKeys }) => {
+          console.log(selectedRowKeys);
+          return <Button type="link">批量删除</Button>;
         }}
         request={async (params = {}) => {
-          const res = await queryPageGoodsService({
+          const res = await queryMachinesListService({
             currentPage: params.current!,
             pageSize: params.pageSize!,
           });
@@ -143,12 +143,20 @@ const Inventory: React.FC = () => {
         rowKey="id"
         search={false}
         toolBarRender={() => [
-          <Button key="button" onClick={()=> setOpen(true)} icon={<PlusOutlined />} type="primary">
+          <Button key="button" onClick={() => setOpen(true)} icon={<PlusOutlined />} type="primary">
             新建
           </Button>,
         ]}
       />
-      <Create values={editData} open={open} onFinish={handleCreateFinish} onCancel={()=> { setOpen(false); setEditData(undefined)}}/>
+      <Create
+        values={editData}
+        open={open}
+        onFinish={handleCreateFinish}
+        onCancel={() => {
+          setOpen(false);
+          setEditData(undefined);
+        }}
+      />
     </>
   );
 };

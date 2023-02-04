@@ -1,30 +1,27 @@
 import { RESPONSE_SUCCESS_CODE } from '@/constant';
-import {
-  deleteGoodsService,
-  PageGoodsData,
-} from '@/services/machine-tool-manage/inventory';
 import { queryRoleListService, RoleData } from '@/services/system-manage/role-manage';
-import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button, message, Popconfirm } from 'antd';
+import { Button } from 'antd';
 import { useRef, useState } from 'react';
 import Create from './Create';
 const RoleManage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [open, setOpen] = useState(false);
-  const [editData, setEditData] = useState<PageGoodsData | undefined>(undefined)
-  const handleDeleteConfirm = async (ids: Record<string, string>) => {
-    const res = await deleteGoodsService(ids);
-    message.success(res?.message);
-    if (res?.code === RESPONSE_SUCCESS_CODE) {
-      actionRef?.current?.reload();
-    }
-  };
-  const handleEdit = (data: RoleData) => {
-    setEditData(data);
+  // const [editData, setEditData] = useState<PageGoodsData | undefined>(undefined)
+  // const handleDeleteConfirm = async (ids: Record<string, string>) => {
+  //   const res = await deleteGoodsService(ids);
+  //   message.success(res?.message);
+  //   if (res?.code === RESPONSE_SUCCESS_CODE) {
+  //     actionRef?.current?.reload();
+  //   }
+  // };
+  const handleEdit = (data: any) => {
+    // setEditData(data);
+    console.log(data);
     setOpen(true);
-  }
+  };
   const columns: ProColumns<RoleData>[] = [
     {
       title: '角色名',
@@ -36,15 +33,15 @@ const RoleManage: React.FC = () => {
       dataIndex: 'use',
       key: 'use',
       valueEnum: {
-        true: { text: '启动', status: 'Success' },
-        false: { text: '停用', status: 'Error' },
+        1: { text: '启动', status: 'Success' },
+        0: { text: '停用', status: 'Error' },
       },
     },
     {
       title: '创建时间',
       dataIndex: 'createDt',
       key: 'createDt',
-      search: false
+      search: false,
     },
     {
       title: '操作',
@@ -53,9 +50,15 @@ const RoleManage: React.FC = () => {
       valueType: 'option',
       fixed: 'right',
       render: (_, record) => [
-        <Button type="link" key="menu">菜单配置</Button>,
-        <Button key="link" type="link" onClick={() => handleEdit(record)}>编辑</Button>,
-        <Button key="delete" type="link" onClick={() => handleEdit(record)}>删除</Button>,
+        <Button type="link" key="menu">
+          菜单配置
+        </Button>,
+        <Button key="link" type="link" onClick={() => handleEdit(record)}>
+          编辑
+        </Button>,
+        <Button key="delete" type="link" onClick={() => handleEdit(record)}>
+          删除
+        </Button>,
       ],
     },
   ];
@@ -63,8 +66,8 @@ const RoleManage: React.FC = () => {
   const handleCreateFinish = () => {
     setOpen(false);
     actionRef?.current?.reload();
-    setEditData(undefined);
-  }
+    // setEditData(undefined);
+  };
   return (
     <>
       <ProTable<RoleData>
@@ -72,13 +75,13 @@ const RoleManage: React.FC = () => {
         actionRef={actionRef}
         cardBordered
         pagination={{
-            defaultPageSize: 10
+          defaultPageSize: 10,
         }}
         options={false}
         request={async (params = {}) => {
           const res = await queryRoleListService({
             currentPage: params.current!,
-            pageSize: params.pageSize!
+            pageSize: params.pageSize!,
           });
           if (res?.code === RESPONSE_SUCCESS_CODE) {
             return {
@@ -96,12 +99,18 @@ const RoleManage: React.FC = () => {
         search={false}
         rowKey="id"
         toolBarRender={() => [
-          <Button key="button" onClick={()=> setOpen(true)} icon={<PlusOutlined />} type="primary">
+          <Button key="button" onClick={() => setOpen(true)} icon={<PlusOutlined />} type="primary">
             新建
           </Button>,
         ]}
       />
-      <Create  open={open} onFinish={handleCreateFinish} onCancel={()=> { setOpen(false); setEditData(undefined)}}/>
+      <Create
+        open={open}
+        onFinish={handleCreateFinish}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
     </>
   );
 };

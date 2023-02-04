@@ -8,17 +8,14 @@ export type RoleData = {
 export async function queryRoleListService(
   body: API.PageSortQueryParams & { searchStatus?: string; keyword?: string },
 ) {
-  return request<API.BasePageResponse<RoleData>>('/sfw-managerApi/manager/pageAdminRole', {
+  return request<API.BasePageResponse<RoleData>>('/sfw-managerApi/manager/role/pageAdminRole', {
     method: 'POST',
     data: body,
   });
 }
-export async function createRoleService(
-    body:  RoleData
-  ) {
-    return request<API.BaseResponse>('/sfw-managerApi/manager/saveAdminRole', {
-      method: 'POST',
-      data: body,
-    });
-  }
-
+export async function createRoleService(body: RoleData) {
+  return request<API.BaseResponse>('/sfw-managerApi/manager/saveAdminRole', {
+    method: 'POST',
+    data: body,
+  });
+}

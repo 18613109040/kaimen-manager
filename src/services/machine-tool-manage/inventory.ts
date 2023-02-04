@@ -10,8 +10,8 @@ export type PageGoodsData = {
   salesVolume: number;
   stock: number;
 };
-export async function queryPageGoodsService(body: API.PageSortQueryParams) {
-  return request<API.BasePageResponse<PageGoodsData>>('/sfw-managerApi/machinesManage/pageGoods', {
+export async function queryMachinesListService(body: API.PageSortQueryParams) {
+  return request<API.BasePageResponse<PageGoodsData>>('/sfw-managerApi/machinesManage/pageList', {
     method: 'POST',
     data: body,
   });
