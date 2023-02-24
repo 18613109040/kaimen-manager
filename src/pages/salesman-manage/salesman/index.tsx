@@ -172,7 +172,7 @@ const Salesman: React.FC = () => {
             console.log(values);
             const res = await setKLevelService({
               id: selectData?.id as string,
-              kLevel: values?.kLevel,
+              kLevel: values?.pVipLevel,
             });
             if (res?.code === RESPONSE_SUCCESS_CODE) {
               message.success('更新成功');
